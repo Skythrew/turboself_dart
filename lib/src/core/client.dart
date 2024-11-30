@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:format/format.dart';
 import 'package:http/http.dart' as http;
 import 'package:turboself_dart/src/routes/endpoints.dart';
 
@@ -39,12 +40,20 @@ class TurboselfClient {
     return _handleResponse(response);
   }
 
-  Future<dynamic> _get(Endpoints endpoint) {
-    return _getURL(endpoint.url);
+  Future<dynamic> _get(Endpoints endpoint, {Object? opts}) {
+    if (opts != null) {
+      return _getURL(endpoint.url.format(opts));
+    } else {
+      return _getURL(endpoint.url);
+    }
   }
 
-  Future<dynamic> _post(Endpoints endpoint, Map<String, dynamic> body) {
-    return _postURL(endpoint.url, body);
+  Future<dynamic> _post(Endpoints endpoint, Map<String, dynamic> body, {Object? opts}) {
+    if (opts != null) {
+      return _postURL(endpoint.url.format(opts), body);
+    } else {
+      return _postURL(endpoint.url, body);
+    }
   }
 
   /// Logs the user in thanks to credentials.
