@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:format/format.dart';
 import 'package:http/http.dart' as http;
 import 'package:turboself_dart/src/routes/endpoints.dart';
+import 'package:turboself_dart/src/models/models.dart';
 
 /// The Turboself client managing the session.
 class TurboselfClient {
@@ -65,5 +66,11 @@ class TurboselfClient {
     hostId = response['hoteId'];
     userId = response['userId'];
     this.username = username;
+  }
+
+  Future<Host> getHost(num hostId) async {
+    final rawHost = await _get(Endpoints.host, hostId);
+
+    return Host.fromJSON(rawHost);
   }
 }
