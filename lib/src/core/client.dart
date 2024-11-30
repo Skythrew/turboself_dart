@@ -40,7 +40,7 @@ class TurboselfClient {
     return _handleResponse(response);
   }
 
-  Future<dynamic> _get(Endpoints endpoint, {Object? opts}) {
+  Future<dynamic> _get(Endpoints endpoint, [Object? opts]) {
     if (opts != null) {
       return _getURL(endpoint.url.format(opts));
     } else {
@@ -48,7 +48,7 @@ class TurboselfClient {
     }
   }
 
-  Future<dynamic> _post(Endpoints endpoint, Map<String, dynamic> body, {Object? opts}) {
+  Future<dynamic> _post(Endpoints endpoint, Map<String, dynamic> body, [Object? opts]) {
     if (opts != null) {
       return _postURL(endpoint.url.format(opts), body);
     } else {
