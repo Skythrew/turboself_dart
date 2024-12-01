@@ -14,7 +14,7 @@ class TurboselfClient {
   final String _baseUrl = "https://api-rest-prod.incb.fr/api/";
   final Map<String, String> _headers = {'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0'};
 
-  HostAPI get hosts => HostAPI(_get, _post);
+  HostAPI get hosts => HostAPI(_get, _post, _put);
 
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode < 200 || response.statusCode > 299) {
@@ -43,6 +43,12 @@ class TurboselfClient {
     return _handleResponse(response);
   }
 
+  Future<dynamic> _putURL(String path, Map<String, dynamic> body) async {
+    final response = await http.put(Uri.parse(_baseUrl + path), headers: _headers, body: jsonEncode(body));
+
+    return _handleResponse(response);
+  }
+
   Future<dynamic> _get(Endpoints endpoint, [Object? opts]) {
     if (opts != null) {
       return _getURL(endpoint.url.format(opts));
@@ -56,6 +62,14 @@ class TurboselfClient {
       return _postURL(endpoint.url.format(opts), body);
     } else {
       return _postURL(endpoint.url, body);
+    }
+  }
+
+  Future<dynamic> _put(Endpoints endpoint, Map<String, dynamic> body, [Object? opts]) {
+    if (opts != null) {
+      return _putURL(endpoint.url.format(opts), body);
+    } else {
+      return _putURL(endpoint.url, body);
     }
   }
 

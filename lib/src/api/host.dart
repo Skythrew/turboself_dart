@@ -4,7 +4,7 @@ import '../routes/endpoints.dart';
 import '../utils/week_range.dart';
 
 class HostAPI extends Api {
-  HostAPI(super.get, super.post);
+  HostAPI(super.get, super.post, super.put);
 
   Future<Host> getHost(num hostId) async {
     final rawHost = await get(Endpoints.host, hostId);
