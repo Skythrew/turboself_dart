@@ -10,4 +10,10 @@ class HostAPI extends Api {
 
     return Host.fromJSON(rawHost);
   }
+
+  Future<List<Balance>> getHostBalances(num hostId) async {
+    final rawBalances = await get(Endpoints.hostBalances, hostId);
+
+    return [for (final rawBalance in rawBalances) Balance.fromJSON(rawBalance)];
+  }
 }
