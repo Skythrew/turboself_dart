@@ -39,4 +39,25 @@ class HostAPI extends Api {
 
     return [for (final rawBooking in rawBookings['rsvWebDto']) Booking.fromJSON(rawBooking, weekRange)];
   }
+
+  Future<BookingDay> bookMeal(num hostId, String bookId, num day, {num reservations = 1, bool bookEvening = false}) async {
+    final rawBook = await post(Endpoints.hostBookMeal, {
+      'dayOfWeek': day,
+      'dayReserv': reservations,
+      'web': {
+        'id': bookId
+      },
+      'hasHoteResaSoirActive': bookEvening
+    }, hostId);
+
+    return BookingDay(
+      rawBook['id'],
+      rawBook['dayReserv'] > 0,
+      true,
+      rawBook['dayOfWeek'],
+      rawBook['msg'],
+      rawBook['dayReserv'],
+      DateTime.now()
+    );
+  }
 }
