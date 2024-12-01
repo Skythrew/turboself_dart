@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:format/format.dart';
 import 'package:http/http.dart' as http;
 import 'package:turboself_dart/src/routes/endpoints.dart';
-import 'package:turboself_dart/src/models/models.dart';
+import 'package:turboself_dart/turboself_dart.dart';
 
 /// The Turboself client managing the session.
 class TurboselfClient {
@@ -13,6 +13,8 @@ class TurboselfClient {
 
   final String _baseUrl = "https://api-rest-prod.incb.fr/api/";
   final Map<String, String> _headers = {'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0'};
+
+  HostAPI get hosts => HostAPI(_get, _post);
 
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode < 200 || response.statusCode > 299) {
@@ -60,17 +62,11 @@ class TurboselfClient {
   /// Logs the user in thanks to credentials.
   Future<void> login(String username, String password) async {
     final response = await _post(Endpoints.login, {'username': username, 'password': password});
-
+    print(response);
     _headers['Authorization'] = 'Bearer ${response['access_token']}';
 
     hostId = response['hoteId'];
     userId = response['userId'];
     this.username = username;
-  }
-
-  Future<Host> getHost(num hostId) async {
-    final rawHost = await _get(Endpoints.host, hostId);
-
-    return Host.fromJSON(rawHost);
   }
 }
