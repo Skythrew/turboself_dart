@@ -1,7 +1,8 @@
 enum Endpoints {
   login('v1/auth/login'),
   host('v1/hotes/{}'),
-  hostBalances('v1/comptes/hotes/{}/3');
+  hostBalances('v1/comptes/hotes/{}/3'),
+  hostCanBookEvening('v1/hotes/{}/resa-soir');
 
   const Endpoints(this.url);
   

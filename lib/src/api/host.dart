@@ -16,4 +16,8 @@ class HostAPI extends Api {
 
     return [for (final rawBalance in rawBalances) Balance.fromJSON(rawBalance)];
   }
+
+  Future<bool> canBookEvening(num hostId) async {
+    return (await get(Endpoints.hostCanBookEvening, hostId));
+  }
 }
