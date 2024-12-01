@@ -20,4 +20,10 @@ class HostAPI extends Api {
   Future<bool> canBookEvening(num hostId) async {
     return (await get(Endpoints.hostCanBookEvening, hostId));
   }
+
+  Future<List<Host>> getHostSiblings(num hostId) async {
+    final rawSiblings = await get(Endpoints.hostSiblings, hostId);
+
+    return [for (final rawSibling in rawSiblings) Host.fromJSON(rawSibling)];
+  }
 }
