@@ -3,7 +3,8 @@ enum Endpoints {
   host('v1/hotes/{}'),
   hostBalances('v1/comptes/hotes/{}/3'),
   hostCanBookEvening('v1/hotes/{}/resa-soir'),
-  hostSiblings('v1/hotes/{}/freres-soeurs');
+  hostSiblings('v1/hotes/{}/freres-soeurs'),
+  hostReservations('v1/reservations/hotes/{}/semaines{}');
 
   const Endpoints(this.url);
   
