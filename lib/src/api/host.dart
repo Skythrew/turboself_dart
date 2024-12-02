@@ -60,4 +60,16 @@ class HostAPI extends Api {
       DateTime.now()
     );
   }
+
+  Future<HistoryEvent> getHistoryEvent(num hostId, num eventId) async {
+    final rawHistory = await get(Endpoints.hostHistorySpecific, [hostId, eventId]);
+
+    return HistoryEvent.fromJSON(rawHistory);
+  }
+
+  Future<List<HistoryEvent>> getHistory(num hostId) async {
+    final rawHistory = await get(Endpoints.hostHistoryGlobal, hostId);
+
+    return [for (final event in rawHistory) HistoryEvent.fromJSON(event)];
+  }
 }
