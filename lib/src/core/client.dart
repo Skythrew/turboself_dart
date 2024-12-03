@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:format/format.dart';
-import 'package:http/http.dart' as http;
 import 'package:turboself_dart/src/routes/endpoints.dart';
 import 'package:turboself_dart/src/models/models.dart';
+import 'package:turboself_dart/src/utils/http.dart';
 import 'package:turboself_dart/src/utils/week_range.dart';
-import 'package:turboself_dart/turboself_dart.dart';
 
 /// The Turboself client managing the session.
 class TurboselfClient {
@@ -13,63 +10,29 @@ class TurboselfClient {
   late final num userId;
   late final String username;
 
-  final String _baseUrl = "https://api-rest-prod.incb.fr/api/";
   final Map<String, String> _headers = {'Content-Type': 'application/json'};
-
-  dynamic _handleResponse(http.Response response) {
-    if (response.statusCode < 200 || response.statusCode > 299) {
-      final jsonResponse = jsonDecode(response.body);
-      throw Exception('(${response.statusCode}) ${jsonResponse['message']}');
-    }
-
-    if (response.body.isEmpty) {
-      return null;
-    }
-    
-    final jsonResponse = jsonDecode(response.body);
-
-    return jsonResponse;
-  }
-
-  Future<dynamic> _getURL(String path) async {
-    final response = await http.get(Uri.parse(_baseUrl + path), headers: _headers);
-
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> _postURL(String path, Map<String, dynamic> body) async {
-    final response = await http.post(Uri.parse(_baseUrl + path), headers: _headers, body: jsonEncode(body));
-
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> _putURL(String path, Map<String, dynamic> body) async {
-    final response = await http.put(Uri.parse(_baseUrl + path), headers: _headers, body: jsonEncode(body));
-
-    return _handleResponse(response);
-  }
 
   Future<dynamic> _get(Endpoints endpoint, [Object? opts]) {
     if (opts != null) {
-      return _getURL(endpoint.url.format(opts));
+      return getURL(endpoint.url.format(opts), _headers);
     } else {
-      return _getURL(endpoint.url);
+      return getURL(endpoint.url, _headers);
     }
   }
 
   Future<dynamic> _post(Endpoints endpoint, Map<String, dynamic> body, [Object? opts]) {
     if (opts != null) {
-      return _postURL(endpoint.url.format(opts), body);
+      return postURL(endpoint.url.format(opts), body, _headers);
     } else {
-      return _postURL(endpoint.url, body);
+      return postURL(endpoint.url, body, _headers);
     }
   }
 
   Future<dynamic> _put(Endpoints endpoint, Map<String, dynamic> body, [Object? opts]) {
     if (opts != null) {
-      return _putURL(endpoint.url.format(opts), body);
+      return putURL(endpoint.url.format(opts), body, _headers);
     } else {
-      return _putURL(endpoint.url, body);
+      return putURL(endpoint.url, body, _headers);
     }
   }
 
