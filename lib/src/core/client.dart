@@ -113,4 +113,10 @@ class TurboselfClient {
 
     return [for (final event in rawHistory) HistoryEvent.fromJSON(event)];
   }
+
+  Future<Payment> getLatestPayment() async {
+    final rawPayment = await _get(Endpoints.hostLatestPayment, hostId);
+
+    return Payment.fromJSON(rawPayment);
+  }
 }
