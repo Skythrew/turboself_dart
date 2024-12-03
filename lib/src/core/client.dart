@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:format/format.dart';
 import 'package:http/http.dart' as http;
 import 'package:turboself_dart/src/routes/endpoints.dart';
+import 'package:turboself_dart/src/models/models.dart';
+import 'package:turboself_dart/src/utils/week_range.dart';
 import 'package:turboself_dart/turboself_dart.dart';
 
 /// The Turboself client managing the session.
@@ -13,8 +15,6 @@ class TurboselfClient {
 
   final String _baseUrl = "https://api-rest-prod.incb.fr/api/";
   final Map<String, String> _headers = {'Content-Type': 'application/json'};
-
-  HostAPI get hosts => HostAPI(_get, _post, _put);
 
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode < 200 || response.statusCode > 299) {
@@ -82,5 +82,72 @@ class TurboselfClient {
     hostId = response['hoteId'];
     userId = response['userId'];
     this.username = username;
+  }
+
+  Future<Host> getHost() async {
+    final rawHost = await _get(Endpoints.host, hostId);
+
+    return Host.fromJSON(rawHost);
+  }
+
+  Future<List<Balance>> getHostBalances() async {
+    final rawBalances = await _get(Endpoints.hostBalances, hostId);
+
+    return [for (final rawBalance in rawBalances) Balance.fromJSON(rawBalance)];
+  }
+
+  Future<bool> canBookEvening() async {
+    return (await _get(Endpoints.hostCanBookEvening, hostId));
+  }
+
+  Future<List<Host>> getHostSiblings() async {
+    final rawSiblings = await _get(Endpoints.hostSiblings, hostId);
+
+    return [for (final rawSibling in rawSiblings) Host.fromJSON(rawSibling)];
+  }
+
+  Future<List<Booking>> getBookings([num? week]) async {
+    final rawBookings = await _get(Endpoints.hostReservations, [hostId, (week != null ? '?num=$week' : '')]);
+
+    if(rawBookings['rsvWebDto'].isEmpty) {
+      throw Exception('No booking found for this week!');
+    }
+
+    final weekRange = getWeekRange(rawBookings['rsvWebDto'][0]['semaine'], rawBookings['rsvWebDto'][0]['annee']);
+
+    return [for (final rawBooking in rawBookings['rsvWebDto']) Booking.fromJSON(rawBooking, weekRange)];
+  }
+
+  Future<BookingDay> bookMeal(String bookId, num day, {num reservations = 1, bool bookEvening = false}) async {
+    final rawBook = await _post(Endpoints.hostBookMeal, {
+      'dayOfWeek': day,
+      'dayReserv': reservations,
+      'web': {
+        'id': bookId
+      },
+      'hasHoteResaSoirActive': bookEvening
+    }, hostId);
+
+    return BookingDay(
+      rawBook['id'],
+      rawBook['dayReserv'] > 0,
+      true,
+      rawBook['dayOfWeek'],
+      rawBook['msg'],
+      rawBook['dayReserv'],
+      DateTime.now()
+    );
+  }
+
+  Future<HistoryEvent> getHistoryEvent(num eventId) async {
+    final rawHistory = await _get(Endpoints.hostHistorySpecific, [hostId, eventId]);
+
+    return HistoryEvent.fromJSON(rawHistory);
+  }
+
+  Future<List<HistoryEvent>> getHistory() async {
+    final rawHistory = await _get(Endpoints.hostHistoryGlobal, hostId);
+
+    return [for (final event in rawHistory) HistoryEvent.fromJSON(event)];
   }
 }
