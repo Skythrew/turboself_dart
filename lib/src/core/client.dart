@@ -119,4 +119,23 @@ class TurboselfClient {
 
     return Payment.fromJSON(rawPayment);
   }
+
+  Future<List<Establishment>> searchEstablishments(String query, {String code = '', num limit = 10}) async {
+    final rawEstablishments = await _get(Endpoints.establishmentSearch, [query, code, limit]);
+    
+    return [for (final rawEstablishment in rawEstablishments) Establishment.fromJSON(rawEstablishment)];
+  }
+
+  Future<Establishment> getEstablishmentBy2P5(String code2p5) async {
+    final rawEstablishment = await _get(Endpoints.establishmentBy2P5, code2p5);
+
+    print(rawEstablishment);
+    return Establishment.fromJSON(rawEstablishment[0]);
+  }
+
+  Future<Establishment> getEstablishmentById(num etabId) async {
+    final rawEstablishment = await _get(Endpoints.establishmentById, etabId);
+
+    return Establishment.fromJSON(rawEstablishment);
+  }
 }

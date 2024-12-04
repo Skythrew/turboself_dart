@@ -8,7 +8,11 @@ enum Endpoints {
   hostBookMeal('v2/hotes/{}/reservations-jours'),
   hostHistorySpecific('v2/hotes/{}/historiques/{}'),
   hostHistoryGlobal('v1/historiques/hotes/{}'),
-  hostLatestPayment('v2/hotes/{}/paiements-payline/latest');
+  hostLatestPayment('v2/hotes/{}/paiements-payline/latest'),
+
+  establishmentSearch('v1/etablissements?q={}&code2p5={}&limit={}'),
+  establishmentBy2P5('v2/etablissements?code2p5={}'),
+  establishmentById('v1/etablissements/etabId/{}');
 
 
   const Endpoints(this.url);
