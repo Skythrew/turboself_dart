@@ -12,7 +12,9 @@ enum Endpoints {
 
   establishmentSearch('v1/etablissements?q={}&code2p5={}&limit={}'),
   establishmentBy2P5('v2/etablissements?code2p5={}'),
-  establishmentById('v1/etablissements/etabId/{}');
+  establishmentById('v1/etablissements/etabId/{}'),
+
+  paymentsSpecific('v1/paiements-payline/{}');
 
 
   const Endpoints(this.url);
