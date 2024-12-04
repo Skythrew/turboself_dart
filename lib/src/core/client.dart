@@ -154,6 +154,28 @@ class TurboselfClient {
     return Payment.fromJSON(rawPayment);
   }
 
+  Future<Payment> initPayment(num amount) async {
+    final rawPaymentReq = await _post(Endpoints.initPayment, {
+      'paiementPayline': {
+        'hote': {
+          'id': hostId
+        }
+      },
+      'montant': amount
+    }, hostId);
+
+    return Payment(
+      null,
+      amount,
+      'INIT',
+      rawPaymentReq['token'],
+      rawPaymentReq['redirectURL'],
+      'https://espacenumerique.turbo-self.com/PagePaiementRefuse.aspx?token=${rawPaymentReq['token']}',
+      'https://espacenumerique.turbo-self.com/PagePaiementValide.aspx?token=${rawPaymentReq['token']}',
+      DateTime.now()
+    );
+  }
+
   Future<List<Establishment>> searchEstablishments(String query,
       {String code = '', num limit = 10}) async {
     final rawEstablishments =

@@ -16,7 +16,8 @@ enum Endpoints {
   establishmentBy2P5('v2/etablissements?code2p5={}'),
   establishmentById('v1/etablissements/etabId/{}'),
 
-  paymentsSpecific('v1/paiements-payline/{}');
+  paymentsSpecific('v1/paiements-payline/{}'),
+  initPayment('v2/hotes/{}/paiements/init');
 
   const Endpoints(this.url);
 
