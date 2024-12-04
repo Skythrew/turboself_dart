@@ -57,6 +57,16 @@ class TurboselfClient {
     return true;
   }
 
+  Future<String> editPassword(String actualPassword, String password) async {
+    final rawPasswordChange = await _put(Endpoints.passwordChange, {
+      'id': userId,
+      'password': actualPassword,
+      'newPassword': password
+    });
+
+    return rawPasswordChange[0]['token'];
+  }
+
   Future<Host> getHost() async {
     final rawHost = await _get(Endpoints.host, hostId);
 
