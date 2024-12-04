@@ -47,6 +47,16 @@ class TurboselfClient {
     this.username = username;
   }
 
+  Future<bool> requestPasswordReset(String email) async {
+    final rawPasswordResetReq = await _get(Endpoints.passwordReset, email);
+
+    if (rawPasswordResetReq['rejected'].length != 0) {
+      throw Exception('Failed to send password reset email to ${rawPasswordResetReq['rejected'].join(', ')}');
+    }
+
+    return true;
+  }
+
   Future<Host> getHost() async {
     final rawHost = await _get(Endpoints.host, hostId);
 
