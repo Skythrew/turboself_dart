@@ -39,7 +39,7 @@ class TurboselfClient {
   /// Logs the user in thanks to credentials.
   Future<void> login(String username, String password) async {
     final response = await _post(Endpoints.login, {'username': username, 'password': password});
-    print(response);
+
     _headers['Authorization'] = 'Bearer ${response['access_token']}';
 
     hostId = response['hoteId'];
