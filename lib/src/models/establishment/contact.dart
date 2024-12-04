@@ -6,11 +6,10 @@ class Contact {
 
   factory Contact.fromJSON(Map<String, dynamic> json) {
     return Contact(
-      json['tel'],
-      json['fax'],
-      (json['configuration'] != null) ? json['configuration']['email'] : null,
-      (json['configuration'] != null) ? json['configuration']['url'] : null
-    );
+        json['tel'],
+        json['fax'],
+        (json['configuration'] != null) ? json['configuration']['email'] : null,
+        (json['configuration'] != null) ? json['configuration']['url'] : null);
   }
 
   factory Contact.allNull() {

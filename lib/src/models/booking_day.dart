@@ -9,17 +9,20 @@ class BookingDay {
   final num reservations;
   final DateTime date;
 
-  factory BookingDay.fromJSON(Map<String, dynamic> json, String bookId, WeekRange weekRange) {
+  factory BookingDay.fromJSON(
+      Map<String, dynamic> json, String bookId, WeekRange weekRange) {
     return BookingDay(
-      bookId,
-      json['dayReserv'] > 0,
-      json['autorise'],
-      json['dayOfWeek'],
-      json['msg'],
-      json['dayReserv'],
-      DateTime.fromMillisecondsSinceEpoch(weekRange.from.millisecondsSinceEpoch + (json['dayOfWeek'] - 1) * 86400000 as int)
-    );
+        bookId,
+        json['dayReserv'] > 0,
+        json['autorise'],
+        json['dayOfWeek'],
+        json['msg'],
+        json['dayReserv'],
+        DateTime.fromMillisecondsSinceEpoch(
+            weekRange.from.millisecondsSinceEpoch +
+                (json['dayOfWeek'] - 1) * 86400000 as int));
   }
-  
-  BookingDay(this.id, this.booked, this.canBook, this.dayNumber, this.message, this.reservations, this.date);
+
+  BookingDay(this.id, this.booked, this.canBook, this.dayNumber, this.message,
+      this.reservations, this.date);
 }

@@ -18,8 +18,7 @@ enum Endpoints {
 
   paymentsSpecific('v1/paiements-payline/{}');
 
-
   const Endpoints(this.url);
-  
+
   final String url;
 }

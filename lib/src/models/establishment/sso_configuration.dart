@@ -11,17 +11,17 @@ class SsoConfiguration {
     }
 
     return SsoConfiguration(
-      json['configuration']['sso']['id'],
-      json['configuration']['sso']['entCode'],
-      json['configuration']['sso']['entName'],
-      json['configuration']['sso']['serveurCas'],
-      json['configuration']['sso']['service']
-    );
+        json['configuration']['sso']['id'],
+        json['configuration']['sso']['entCode'],
+        json['configuration']['sso']['entName'],
+        json['configuration']['sso']['serveurCas'],
+        json['configuration']['sso']['service']);
   }
 
   factory SsoConfiguration.allNull() {
     return SsoConfiguration(null, null, null, null, null);
   }
 
-  SsoConfiguration(this.id, this.entCode, this.entName, this.casServer, this.service);
+  SsoConfiguration(
+      this.id, this.entCode, this.entName, this.casServer, this.service);
 }

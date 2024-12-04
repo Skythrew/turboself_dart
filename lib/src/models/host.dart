@@ -1,7 +1,4 @@
-enum HostMode {
-  perLunch,
-  subscription
-}
+enum HostMode { perLunch, subscription }
 
 class HostPerms {
   final bool? payment;
@@ -12,15 +9,15 @@ class HostPerms {
 
   factory HostPerms.fromJSON(Map<String, dynamic> json) {
     return HostPerms(
-      json['droitPaiement'],
-      json['droitReservation'],
-      json['droitCafeteria'],
-      json['autoriseReservSoldeIns'],
-      json['nbMulti']
-    );
+        json['droitPaiement'],
+        json['droitReservation'],
+        json['droitCafeteria'],
+        json['autoriseReservSoldeIns'],
+        json['nbMulti']);
   }
 
-  HostPerms(this.payment, this.reservation, this.cafeteria, this.bookWithNegativeBalance, this.maxPassages);
+  HostPerms(this.payment, this.reservation, this.cafeteria,
+      this.bookWithNegativeBalance, this.maxPassages);
 }
 
 class Host {
@@ -40,21 +37,33 @@ class Host {
 
   factory Host.fromJSON(Map<String, dynamic> json) {
     return Host(
-      json['id'],
-      json['idOrig'],
-      json['etab']['id'],
-      json['prenom'],
-      json['nom'],
-      (json['mode'] == 'Argent') ? HostMode.perLunch : HostMode.subscription,
-      json['qualite'],
-      json['division'],
-      json['prixDej'],
-      json['type'],
-      json['carteCodee'],
-      json['urlCafeteria'],
-      HostPerms.fromJSON(json)
-    );
+        json['id'],
+        json['idOrig'],
+        json['etab']['id'],
+        json['prenom'],
+        json['nom'],
+        (json['mode'] == 'Argent') ? HostMode.perLunch : HostMode.subscription,
+        json['qualite'],
+        json['division'],
+        json['prixDej'],
+        json['type'],
+        json['carteCodee'],
+        json['urlCafeteria'],
+        HostPerms.fromJSON(json));
   }
 
-  Host(this.id, this.localId, this.etabId, this.firstName, this.lastName, this.mode, this.quality, this.division, this.lunchPrice, this.type, this.cardNumber, this.cafeteriaUrl, this.permissions);
+  Host(
+      this.id,
+      this.localId,
+      this.etabId,
+      this.firstName,
+      this.lastName,
+      this.mode,
+      this.quality,
+      this.division,
+      this.lunchPrice,
+      this.type,
+      this.cardNumber,
+      this.cafeteriaUrl,
+      this.permissions);
 }

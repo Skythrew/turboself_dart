@@ -12,16 +12,13 @@ class Booking {
   final List<BookingDay> days;
 
   factory Booking.fromJSON(Map<String, dynamic> json, WeekRange weekRange) {
-    return Booking(
-      json['id'], 
-      json['semaine'],
-      json['hote']['id'],
-      weekRange.from,
-      weekRange.to,
-      Terminal.fromJSON(json['borne']),
-      [for (final rawBookingDay in json['jours']) BookingDay.fromJSON(rawBookingDay, json['id'], weekRange)]
-    );
+    return Booking(json['id'], json['semaine'], json['hote']['id'],
+        weekRange.from, weekRange.to, Terminal.fromJSON(json['borne']), [
+      for (final rawBookingDay in json['jours'])
+        BookingDay.fromJSON(rawBookingDay, json['id'], weekRange)
+    ]);
   }
 
-  Booking(this.id, this.week, this.hostId, this.from, this.to, this.terminal, this.days);  
+  Booking(this.id, this.week, this.hostId, this.from, this.to, this.terminal,
+      this.days);
 }

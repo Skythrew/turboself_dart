@@ -27,26 +27,63 @@ class Establishment {
 
   factory Establishment.fromJSON(Map<String, dynamic> json) {
     return Establishment(
-      json['id'] ?? 0,
-      json['nom'] ?? 'N/A',
-      json['currencySymbol'],
-      json['code2p5'].toString(),
-      json['logoUrl'],
-      json['numEtab'],
-      json['pcServeur'],
-      (json['configuration'] != null) ? json['configuration']['msgAccueil'] ?? '' : 'You are not logged in so you can\'t see all data',
-      (json['configuration'] != null) ? json['configuration']['nbRepasMini'] ?? 0 : null,
-      (json['configuration'] != null) ? json['configuration']['creanceMini'] ?? 0 : null,
-      (json['configuration'] != null) ? json['configuration']['montantCreditMini'] ?? 0 : null,
-      json['desactive'] ?? false,
-      (json['configuration'] != null && json['configuration']['fermetures'] != null) ? [for (final rawClosure in json['configuration']['fermetures']) Closure.fromJSON(rawClosure)] : [],
-      (json['id'] != null) ? Location.fromJSON(json) : Location.allNull(),
-      (json['id'] != null) ? Contact.fromJSON(json) : Contact.allNull(),
-      (json['id'] != null) ? Permissions.fromJSON(json) : Permissions.allNull(),
-      (json['id'] != null) ? SsoConfiguration.fromJSON(json) : SsoConfiguration.allNull(),
-      (json['id'] != null) ? Synchronisation.fromJSON(json) : Synchronisation.allNull()
-    );
+        json['id'] ?? 0,
+        json['nom'] ?? 'N/A',
+        json['currencySymbol'],
+        json['code2p5'].toString(),
+        json['logoUrl'],
+        json['numEtab'],
+        json['pcServeur'],
+        (json['configuration'] != null)
+            ? json['configuration']['msgAccueil'] ?? ''
+            : 'You are not logged in so you can\'t see all data',
+        (json['configuration'] != null)
+            ? json['configuration']['nbRepasMini'] ?? 0
+            : null,
+        (json['configuration'] != null)
+            ? json['configuration']['creanceMini'] ?? 0
+            : null,
+        (json['configuration'] != null)
+            ? json['configuration']['montantCreditMini'] ?? 0
+            : null,
+        json['desactive'] ?? false,
+        (json['configuration'] != null &&
+                json['configuration']['fermetures'] != null)
+            ? [
+                for (final rawClosure in json['configuration']['fermetures'])
+                  Closure.fromJSON(rawClosure)
+              ]
+            : [],
+        (json['id'] != null) ? Location.fromJSON(json) : Location.allNull(),
+        (json['id'] != null) ? Contact.fromJSON(json) : Contact.allNull(),
+        (json['id'] != null)
+            ? Permissions.fromJSON(json)
+            : Permissions.allNull(),
+        (json['id'] != null)
+            ? SsoConfiguration.fromJSON(json)
+            : SsoConfiguration.allNull(),
+        (json['id'] != null)
+            ? Synchronisation.fromJSON(json)
+            : Synchronisation.allNull());
   }
 
-  Establishment(this.id, this.name, this.currencySymbol, this.code, this.logoUrl, this.uai, this.macAddress, this.motd, this.minMealsToCredit, this.minDebtToCredit, this.minAmountToCredit, this.disabled, this.closures, this.location, this.contact, this.permissions, this.sso, this.synchronisation);
+  Establishment(
+      this.id,
+      this.name,
+      this.currencySymbol,
+      this.code,
+      this.logoUrl,
+      this.uai,
+      this.macAddress,
+      this.motd,
+      this.minMealsToCredit,
+      this.minDebtToCredit,
+      this.minAmountToCredit,
+      this.disabled,
+      this.closures,
+      this.location,
+      this.contact,
+      this.permissions,
+      this.sso,
+      this.synchronisation);
 }

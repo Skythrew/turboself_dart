@@ -20,7 +20,8 @@ class TurboselfClient {
     }
   }
 
-  Future<dynamic> _post(Endpoints endpoint, Map<String, dynamic> body, [Object? opts]) {
+  Future<dynamic> _post(Endpoints endpoint, Map<String, dynamic> body,
+      [Object? opts]) {
     if (opts != null) {
       return postURL(endpoint.url.format(opts), body, _headers);
     } else {
@@ -28,7 +29,8 @@ class TurboselfClient {
     }
   }
 
-  Future<dynamic> _put(Endpoints endpoint, Map<String, dynamic> body, [Object? opts]) {
+  Future<dynamic> _put(Endpoints endpoint, Map<String, dynamic> body,
+      [Object? opts]) {
     if (opts != null) {
       return putURL(endpoint.url.format(opts), body, _headers);
     } else {
@@ -38,7 +40,8 @@ class TurboselfClient {
 
   /// Logs the user in thanks to credentials.
   Future<void> login(String username, String password) async {
-    final response = await _post(Endpoints.login, {'username': username, 'password': password});
+    final response = await _post(
+        Endpoints.login, {'username': username, 'password': password});
 
     _headers['Authorization'] = 'Bearer ${response['access_token']}';
 
@@ -51,18 +54,16 @@ class TurboselfClient {
     final rawPasswordResetReq = await _get(Endpoints.passwordReset, email);
 
     if (rawPasswordResetReq['rejected'].length != 0) {
-      throw Exception('Failed to send password reset email to ${rawPasswordResetReq['rejected'].join(', ')}');
+      throw Exception(
+          'Failed to send password reset email to ${rawPasswordResetReq['rejected'].join(', ')}');
     }
 
     return true;
   }
 
   Future<String> editPassword(String actualPassword, String password) async {
-    final rawPasswordChange = await _put(Endpoints.passwordChange, {
-      'id': userId,
-      'password': actualPassword,
-      'newPassword': password
-    });
+    final rawPasswordChange = await _put(Endpoints.passwordChange,
+        {'id': userId, 'password': actualPassword, 'newPassword': password});
 
     return rawPasswordChange[0]['token'];
   }
@@ -90,40 +91,47 @@ class TurboselfClient {
   }
 
   Future<List<Booking>> getBookings([num? week]) async {
-    final rawBookings = await _get(Endpoints.hostReservations, [hostId, (week != null ? '?num=$week' : '')]);
+    final rawBookings = await _get(Endpoints.hostReservations,
+        [hostId, (week != null ? '?num=$week' : '')]);
 
-    if(rawBookings['rsvWebDto'].isEmpty) {
+    if (rawBookings['rsvWebDto'].isEmpty) {
       throw Exception('No booking found for this week!');
     }
 
-    final weekRange = getWeekRange(rawBookings['rsvWebDto'][0]['semaine'], rawBookings['rsvWebDto'][0]['annee']);
+    final weekRange = getWeekRange(rawBookings['rsvWebDto'][0]['semaine'],
+        rawBookings['rsvWebDto'][0]['annee']);
 
-    return [for (final rawBooking in rawBookings['rsvWebDto']) Booking.fromJSON(rawBooking, weekRange)];
+    return [
+      for (final rawBooking in rawBookings['rsvWebDto'])
+        Booking.fromJSON(rawBooking, weekRange)
+    ];
   }
 
-  Future<BookingDay> bookMeal(String bookId, num day, {num reservations = 1, bool bookEvening = false}) async {
-    final rawBook = await _post(Endpoints.hostBookMeal, {
-      'dayOfWeek': day,
-      'dayReserv': reservations,
-      'web': {
-        'id': bookId
-      },
-      'hasHoteResaSoirActive': bookEvening
-    }, hostId);
+  Future<BookingDay> bookMeal(String bookId, num day,
+      {num reservations = 1, bool bookEvening = false}) async {
+    final rawBook = await _post(
+        Endpoints.hostBookMeal,
+        {
+          'dayOfWeek': day,
+          'dayReserv': reservations,
+          'web': {'id': bookId},
+          'hasHoteResaSoirActive': bookEvening
+        },
+        hostId);
 
     return BookingDay(
-      rawBook['id'],
-      rawBook['dayReserv'] > 0,
-      true,
-      rawBook['dayOfWeek'],
-      rawBook['msg'],
-      rawBook['dayReserv'],
-      DateTime.now()
-    );
+        rawBook['id'],
+        rawBook['dayReserv'] > 0,
+        true,
+        rawBook['dayOfWeek'],
+        rawBook['msg'],
+        rawBook['dayReserv'],
+        DateTime.now());
   }
 
   Future<HistoryEvent> getHistoryEvent(num eventId) async {
-    final rawHistory = await _get(Endpoints.hostHistorySpecific, [hostId, eventId]);
+    final rawHistory =
+        await _get(Endpoints.hostHistorySpecific, [hostId, eventId]);
 
     return HistoryEvent.fromJSON(rawHistory);
   }
@@ -146,10 +154,15 @@ class TurboselfClient {
     return Payment.fromJSON(rawPayment);
   }
 
-  Future<List<Establishment>> searchEstablishments(String query, {String code = '', num limit = 10}) async {
-    final rawEstablishments = await _get(Endpoints.establishmentSearch, [query, code, limit]);
-    
-    return [for (final rawEstablishment in rawEstablishments) Establishment.fromJSON(rawEstablishment)];
+  Future<List<Establishment>> searchEstablishments(String query,
+      {String code = '', num limit = 10}) async {
+    final rawEstablishments =
+        await _get(Endpoints.establishmentSearch, [query, code, limit]);
+
+    return [
+      for (final rawEstablishment in rawEstablishments)
+        Establishment.fromJSON(rawEstablishment)
+    ];
   }
 
   Future<Establishment> getEstablishmentBy2P5(String code2p5) async {
